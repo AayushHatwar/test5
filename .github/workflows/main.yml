@@ -1,35 +1,60 @@
-name: Complex Job Flow new 
+name: etl pipeline
+
 on:
   push:
     branches:
       - main
+
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "job one"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run extract_data.py
+        run: echo 'Job1'
+
   job2:
-    needs: job1
     runs-on: ubuntu-latest
+    needs: job1
     steps:
-      - run: echo "job two"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run transform_data.py
+        run: echo 'Job2'
+
   job3:
+    runs-on: ubuntu-latest
     needs: job1
-    runs-on: ubuntu-latest
     steps:
-      - run: echo "job three"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run transform_data.py
+        run: echo 'Job3'
+
   job4:
+    runs-on: ubuntu-latest
     needs: job2
-    runs-on: ubuntu-latest
     steps:
-      - run: echo "job four"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run load_data.py
+        run: echo 'job4'
+
   job5:
+    runs-on: ubuntu-latest
     needs: job3
-    runs-on: ubuntu-latest
     steps:
-      - run: echo "job five"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run load_data.py
+        run: echo 'job5'
+
   job6:
-    needs: [job4, job5]
     runs-on: ubuntu-latest
+    needs: [job4, job5]
     steps:
-      - run: echo "job six"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run load_data.py
+        run: echo 'job6'
